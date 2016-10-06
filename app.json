@@ -1,0 +1,7 @@
+{
+  "name": "Mattermost ← JIRA connector",
+  "description": "Simple WEbHooks connector in pure Go",
+  "repository": "https://github.com/unco-games/mattermost-jira",
+  "logo": "https://design.atlassian.com/images/logo/favicon.png",
+  "keywords": ["mattermost", "jira", "webhook", "go", "golang"]
+}
