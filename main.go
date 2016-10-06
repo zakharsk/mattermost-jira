@@ -44,7 +44,9 @@ type Data struct {
 
 // Send it
 type Message struct {
-	Text string
+	Text     string
+	Username string
+	Icon_url string
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
@@ -114,6 +116,8 @@ func index(w http.ResponseWriter, r *http.Request) {
 
 	message := Message{
 		Text: text,
+		Username: "JIRA",
+		Icon_url: "https://design.atlassian.com/images/logo/favicon.png",
 	}
 
 	byteMessage, _ := json.Marshal(message)
@@ -132,7 +136,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 		}
 		defer resp.Body.Close()
 	} else {
-		log.Println(text)
+		log.Println(string(byteMessage))
 	}
 
 
@@ -145,5 +149,5 @@ func main() {
 		port = "5000"
 	}
 	http.HandleFunc("/", index)
-	http.ListenAndServe(":"+port, nil)
+	http.ListenAndServe(":" + port, nil)
 }
