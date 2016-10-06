@@ -6,7 +6,7 @@ You need Heroku application name in `https://<heroku_app_name>.herokuapp.com` fo
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/unco-games/mattermost-jira)
  
 ## For Mattermost administrator
-You need incoming webhook URL in `http://<mattermost_server>/hooks/<web_hook_id>` format.
+You need incoming webhook URL in `http://<mattermost_server>/hooks/<web_hook_id>` format. Can be copied from Mattermost config.
 
  - System console
  - INTEGRATIONS → Custom Integrations
@@ -27,10 +27,12 @@ You need incoming webhook URL in `http://<mattermost_server>/hooks/<web_hook_id>
         - created: true
         - updated: true
         - deleted: true
+
+## Other info
         
-### Tested with:
+#### Tested with:
  - JIRA v6.4.8
  - Mattermost v3.4.0
  
-### ToDo:
+#### ToDo:
  - Handle errors (muted now)
