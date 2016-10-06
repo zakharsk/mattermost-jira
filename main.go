@@ -82,6 +82,9 @@ func index(w http.ResponseWriter, r *http.Request) {
 	if len(data.Changelog.Items) > 0 {
 		for _, item := range data.Changelog.Items {
 			itemName := strings.ToUpper(string(item.Field[0])) + item.Field[1:]
+			if item.FromString == "" {
+				item.FromString = "None"
+			}
 			changelog += fmt.Sprintf(
 				"\n%s: ~~%s~~ %s",
 				itemName,
