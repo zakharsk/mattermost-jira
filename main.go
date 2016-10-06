@@ -8,28 +8,33 @@ import (
 	"net/url"
 	"os"
 	"log"
+	"strings"
 )
 
 // Get it
-
 type Data struct {
 	WebhookEvent string
 	User         struct {
 		Name        string
+		AvatarUrls map[string]string
 		DisplayName string
 	}
 	Issue struct {
 		Self   string
 		Key    string
 		Fields struct {
+			Issuetype struct{
+				iconUrl string
+				Name string
+				  }
 			Summary string
 		}
 	}
 	Comment struct {
 		Body string
 	}
-	Changelog []struct{
-		Items struct{
+	Changelog struct{
+		Items []struct{
 			Field string
 			FromString string
 			ToString string
@@ -38,7 +43,6 @@ type Data struct {
 }
 
 // Send it
-
 type Message struct {
 	Text string
 }
@@ -56,7 +60,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 	u, _ := url.Parse(data.Issue.Self)
 
 	// Select action
-	var action, appendix string
+	var action, comment string
 	switch data.WebhookEvent {
 	case "jira:issue_created":
 		action = "created"
@@ -68,27 +72,41 @@ func index(w http.ResponseWriter, r *http.Request) {
 
 	if len(data.Comment.Body) > 0 {
 		action = "commented"
-		appendix = fmt.Sprintf(" with\n>%s", data.Comment.Body)
+		comment = fmt.Sprintf("\n>%s", data.Comment.Body)
+	}
+
+	// Process changelog
+	var changelog string
+	if len(data.Changelog.Items) > 0 {
+		for _, item := range data.Changelog.Items {
+			changelog += fmt.Sprintf(
+				"\n%s: ~~%s~~ %s",
+				item.Field,
+				item.FromString,
+				item.ToString,
+			)
+		}
 	}
 
 	// Create message for Mattermost
 	text := fmt.Sprintf(
 		//[UserFirstName UserSecondName](user_link) commented issue [[TSK-158]](issue_link) "Test task" with "Test comment"
-		"[%s](%s://%s/secure/ViewProfile.jspa?name=%s) %s [%s](%s://%s/browse/%s) \"%s\"%s //\n%s//",
+		"![user_icon](%s) [%s](%s://%s/secure/ViewProfile.jspa?name=%s) %s %s ![task_icon](%s) [%s](%s://%s/browse/%s) \"%s\"%s%s",
+		data.User.AvatarUrls["16x16"],
 		data.User.DisplayName,
 		u.Scheme,
 		u.Host,
 		data.User.Name,
 		action,
+		strings.ToLower(data.Issue.Fields.Issuetype.Name),
+		data.Issue.Fields.Issuetype.iconUrl,
 		data.Issue.Key,
 		u.Scheme,
 		u.Host,
 		data.Issue.Key,
 		data.Issue.Fields.Summary,
-		appendix,
-		data.Changelog,
-
-
+		changelog,
+		comment,
 	)
 
 	message := Message{
