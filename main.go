@@ -3,6 +3,8 @@ package main
 import (
 	"net/http"
 	"fmt"
+	"os"
+	"log"
 )
 
 func index(w http.ResponseWriter, r *http.Request) {
@@ -16,6 +18,11 @@ func index(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "5000"
+	}
+	log.Println(port)
 	http.HandleFunc("/", index)
-	http.ListenAndServe(":5000", nil)
+	http.ListenAndServe(":" + port, nil)
 }
