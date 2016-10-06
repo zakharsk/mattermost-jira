@@ -22,14 +22,18 @@ type Data struct {
 		Self   string
 		Key    string
 		Fields struct {
-			Issuetype struct {
-				IconUrl string
-			}
 			Summary string
 		}
 	}
 	Comment struct {
 		Body string
+	}
+	Changelog []struct{
+		Items struct{
+			Field string
+			FromString string
+			ToString string
+		      }
 	}
 }
 
@@ -70,19 +74,19 @@ func index(w http.ResponseWriter, r *http.Request) {
 	// Create message for Mattermost
 	text := fmt.Sprintf(
 		//[UserFirstName UserSecondName](user_link) commented issue [[TSK-158]](issue_link) "Test task" with "Test comment"
-		"[%s](%s://%s/secure/ViewProfile.jspa?name=%s) %s %s [%s](%s://%s/browse/%s) \"%s\"%s",
+		"[%s](%s://%s/secure/ViewProfile.jspa?name=%s) %s [%s](%s://%s/browse/%s) \"%s\"%s //\n%s//",
 		data.User.DisplayName,
 		u.Scheme,
 		u.Host,
 		data.User.Name,
 		action,
-		data.Issue.Fields.Issuetype.IconUrl,
 		data.Issue.Key,
 		u.Scheme,
 		u.Host,
 		data.Issue.Key,
 		data.Issue.Fields.Summary,
 		appendix,
+		data.Changelog,
 
 
 	)
