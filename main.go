@@ -79,9 +79,10 @@ func index(w http.ResponseWriter, r *http.Request) {
 	var changelog string
 	if len(data.Changelog.Items) > 0 {
 		for _, item := range data.Changelog.Items {
+			itemName := strings.ToUpper(string(item.Field[0])) + item.Field[1:]
 			changelog += fmt.Sprintf(
 				"\n%s: ~~%s~~ %s",
-				item.Field,
+				itemName,
 				item.FromString,
 				item.ToString,
 			)
@@ -90,7 +91,9 @@ func index(w http.ResponseWriter, r *http.Request) {
 
 	// Create message for Mattermost
 	text := fmt.Sprintf(
-		//[UserFirstName UserSecondName](user_link) commented issue [[TSK-158]](issue_link) "Test task" with "Test comment"
+		//![user_icon](user_icon_link)[UserFirstName UserSecondName](user_link) commented task ![task_icon](task_icon link)[TSK-42](issue_link) "Test task"
+		//Status: ~~Done~~ Finished
+		//>Comment text
 		"![user_icon](%s) [%s](%s://%s/secure/ViewProfile.jspa?name=%s) %s %s ![task_icon](%s) [%s](%s://%s/browse/%s) \"%s\"%s%s",
 		data.User.AvatarUrls["16x16"],
 		data.User.DisplayName,
