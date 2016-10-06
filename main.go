@@ -7,7 +7,6 @@ import (
 	"bytes"
 	"fmt"
 	"net/url"
-	"log"
 )
 
 // Get it
