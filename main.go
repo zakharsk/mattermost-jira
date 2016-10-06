@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"log"
 	"strings"
 )
 
@@ -49,16 +48,13 @@ type Message struct {
 	Icon_url string
 }
 
-func index(w http.ResponseWriter, r *http.Request) {
-	// Get mattermost URL
-	mattermostHookURL := r.URL.Query().Get("mattermost_hook_url")
-
+func getMessage(request *http.Request) []byte {
 	// Parse JSON from JIRA
-	decoder := json.NewDecoder(r.Body)
+	decoder := json.NewDecoder(request.Body)
 	var data Data
 	decoder.Decode(&data)
 
-	// Get JIRA URL
+	// Get JIRA URL from "issue" section in JSON
 	u, _ := url.Parse(data.Issue.Self)
 
 	// Select action
@@ -72,9 +68,9 @@ func index(w http.ResponseWriter, r *http.Request) {
 		action = "deleted"
 	}
 
+	//Process new comment
 	if len(data.Comment.Body) > 0 {
-		action = "commented"
-		comment = fmt.Sprintf("\n>%s", data.Comment.Body)
+		comment = fmt.Sprintf("\nComment:\n>%s", data.Comment.Body)
 	}
 
 	// Process changelog
@@ -96,6 +92,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 
 	// Create message for Mattermost
 	text := fmt.Sprintf(
+		//Message format:
 		//![user_icon](user_icon_link)[UserFirstName UserSecondName](user_link) commented task ![task_icon](task_icon link)[TSK-42](issue_link) "Test task"
 		//Status: ~~Done~~ Finished
 		//>Comment text
@@ -123,12 +120,22 @@ func index(w http.ResponseWriter, r *http.Request) {
 		Icon_url: "https://design.atlassian.com/images/logo/favicon.png",
 	}
 
-	byteMessage, _ := json.Marshal(message)
+	JSONMessage, _ := json.Marshal(message)
 
+	return JSONMessage
+}
+
+func index(_ http.ResponseWriter, r *http.Request) {
+
+	// Get mattermost URL
+	mattermostHookURL := r.URL.Query().Get("mattermost_hook_url")
 
 	if len(mattermostHookURL) > 0 {
+		// Get message from JIRA JSON request
+		message := getMessage(r)
+
 		// Create http-client
-		req, _ := http.NewRequest("POST", mattermostHookURL, bytes.NewBuffer(byteMessage))
+		req, _ := http.NewRequest("POST", mattermostHookURL, bytes.NewBuffer(message))
 		req.Header.Set("Content-Type", "application/json")
 
 		// Send data to Mattermost
@@ -138,11 +145,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		}
 		defer resp.Body.Close()
-	} else {
-		log.Println(string(byteMessage))
 	}
-
-
 }
 
 func main() {

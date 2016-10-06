@@ -29,5 +29,8 @@ You need incoming webhook URL in `http://<mattermost_server>/hooks/<web_hook_id>
         - deleted: true
         
 ### Tested with:
- - JIRA 6.4.8
- - Mattermost
+ - JIRA v6.4.8
+ - Mattermost v3.4.0
+ 
+### ToDo:
+ - Handle errors (muted now)
