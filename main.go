@@ -53,7 +53,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 	// Get JIRA URL
 
 	u, _ := url.Parse(data.Issue.Self)
-	log.Println(u.Scheme + u.Host)
+	//log.Println(u.Scheme + u.Host)
 
 	// Send data to Mattermost
 
