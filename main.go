@@ -24,7 +24,7 @@ type Data struct {
 		Key    string
 		Fields struct {
 			Issuetype struct{
-				iconUrl string
+				IconUrl string
 				Name string
 				  }
 			Summary string
@@ -99,7 +99,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 		data.User.Name,
 		action,
 		strings.ToLower(data.Issue.Fields.Issuetype.Name),
-		data.Issue.Fields.Issuetype.iconUrl,
+		data.Issue.Fields.Issuetype.IconUrl,
 		data.Issue.Key,
 		u.Scheme,
 		u.Host,
