@@ -15,29 +15,29 @@ type Data struct {
 	WebhookEvent string
 	User         struct {
 		Name        string
-		AvatarUrls map[string]string
+		AvatarUrls  map[string]string
 		DisplayName string
 	}
 	Issue struct {
 		Self   string
 		Key    string
 		Fields struct {
-			Issuetype struct{
+			Issuetype struct {
 				IconUrl string
-				Name string
-				  }
+				Name    string
+			}
 			Summary string
 		}
 	}
 	Comment struct {
 		Body string
 	}
-	Changelog struct{
-		Items []struct{
-			Field string
+	Changelog struct {
+		Items []struct {
+			Field      string
 			FromString string
-			ToString string
-		      }
+			ToString   string
+		}
 	}
 }
 
@@ -115,7 +115,7 @@ func getMessage(request *http.Request) []byte {
 	)
 
 	message := Message{
-		Text: text,
+		Text:     text,
 		Username: "JIRA",
 		Icon_url: "https://design.atlassian.com/images/logo/favicon.png",
 	}
@@ -155,5 +155,5 @@ func main() {
 		port = "5000"
 	}
 	http.HandleFunc("/", index)
-	http.ListenAndServe(":" + port, nil)
+	http.ListenAndServe(":"+port, nil)
 }
