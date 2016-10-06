@@ -1,9 +1,3 @@
 {
   "name": "Mattermost & JIRA connector",
-  "image": "heroku/go:1.7",
-  "buildpacks": [
-    {
-      "url": "https://elements.heroku.com/buildpacks/heroku/heroku-buildpack-go"
-    }
-  ]
 }
