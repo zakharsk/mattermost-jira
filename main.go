@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-// Get it
+// Data struct for JIRA JSON parsing
 type Data struct {
 	WebhookEvent string
 	User         struct {
@@ -41,11 +41,11 @@ type Data struct {
 	}
 }
 
-// Send it
+// Message structure for Mattermost JSON creation
 type Message struct {
-	Text     string
-	Username string
-	Icon_url string
+	Text     string `json:"text"`
+	Username string `json:"username"`
+	IconUrl  string `json:"icon_url"`
 }
 
 func getMessage(request *http.Request) []byte {
@@ -117,7 +117,7 @@ func getMessage(request *http.Request) []byte {
 	message := Message{
 		Text:     text,
 		Username: "JIRA",
-		Icon_url: "https://design.atlassian.com/images/logo/favicon.png",
+		IconUrl:  "https://design.atlassian.com/images/logo/favicon.png",
 	}
 
 	JSONMessage, _ := json.Marshal(message)
