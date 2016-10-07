@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-// Data struct for JIRA JSON parsing
+// Data struct for JIRA JSON parsing.
 type Data struct {
 	WebhookEvent string
 	User         struct {
@@ -41,7 +41,7 @@ type Data struct {
 	}
 }
 
-// Message structure for Mattermost JSON creation
+// Message structure for Mattermost JSON creation.
 type Message struct {
 	Text     string `json:"text"`
 	Username string `json:"username"`
