@@ -23,8 +23,8 @@ type Data struct {
 		Key    string
 		Fields struct {
 			Issuetype struct {
-				IconUrl string
-				Name    string
+					  IconURL string
+					  Name    string
 			}
 			Summary string
 		}
@@ -45,7 +45,7 @@ type Data struct {
 type Message struct {
 	Text     string `json:"text"`
 	Username string `json:"username"`
-	IconUrl  string `json:"icon_url"`
+	IconURL  string `json:"icon_url"`
 }
 
 func getMessage(request *http.Request) []byte {
@@ -104,7 +104,7 @@ func getMessage(request *http.Request) []byte {
 		data.User.Name,
 		action,
 		strings.ToLower(data.Issue.Fields.Issuetype.Name),
-		data.Issue.Fields.Issuetype.IconUrl,
+		data.Issue.Fields.Issuetype.IconURL,
 		data.Issue.Key,
 		u.Scheme,
 		u.Host,
@@ -117,7 +117,7 @@ func getMessage(request *http.Request) []byte {
 	message := Message{
 		Text:     text,
 		Username: "JIRA",
-		IconUrl:  "https://design.atlassian.com/images/logo/favicon.png",
+		IconURL:  "https://design.atlassian.com/images/logo/favicon.png",
 	}
 
 	JSONMessage, _ := json.Marshal(message)
