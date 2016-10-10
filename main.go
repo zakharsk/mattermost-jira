@@ -70,7 +70,7 @@ func getMessage(request *http.Request) []byte {
 
 	//Process new comment
 	if len(data.Comment.Body) > 0 {
-		comment = fmt.Sprintf("\nComment:\n>%s", data.Comment.Body)
+		comment = fmt.Sprintf("\nComment:\n```\n%s\n```", data.Comment.Body)
 	}
 
 	// Process changelog
