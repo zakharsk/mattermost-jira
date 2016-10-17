@@ -124,7 +124,7 @@ func getMessage(request *http.Request) []byte {
 	message := Message{
 		Text:     text,
 		Username: "JIRA",
-		IconURL:  "https://design.atlassian.com/images/brand/logo-02.png",
+		IconURL:  "https://raw.githubusercontent.com/unco-games/mattermost-jira/master/logo-02.png",
 	}
 
 	JSONMessage, _ := json.Marshal(message)
