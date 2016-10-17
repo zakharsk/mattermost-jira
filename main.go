@@ -81,12 +81,19 @@ func getMessage(request *http.Request) []byte {
 			if item.FromString == "" {
 				item.FromString = "None"
 			}
-			changelog += fmt.Sprintf(
-				"\n%s: ~~%s~~ %s",
-				itemName,
-				item.FromString,
-				item.ToString,
-			)
+			if itemName == "Description" {
+				changelog += fmt.Sprintf(
+					"\nNew Description:\n```\n%s\n```",
+					item.ToString,
+				)
+			} else {
+				changelog += fmt.Sprintf(
+					"\n%s: ~~%s~~ %s",
+					itemName,
+					item.FromString,
+					item.ToString,
+				)
+			}
 		}
 	}
 
