@@ -22,7 +22,7 @@ You need incoming webhook URL in `http://<mattermost_server>/hooks/<web_hook_id>
  - Add Incoming Webhook
  
 ## For JIRA administrator
- - JIRA Aadministration → System
+ - JIRA Administration → System
  - ADVANCED → WebHooks
  - Create a WebHook:
     - URL:  https://_**heroku_app_name**_.herokuapp.com?mattermost_hook_url=_**mattermost_hook_url**_
